@@ -23,12 +23,51 @@ class Mish(nn.Module):
     def forward(self,x):
         return x*(torch.tanh(F.softplus(x)))
 
-#Gelu激活函数,据说适用于NLP领域
-#内置于nn.functional中
-# F.gelu(x)
+
+
+#softplus的平替版,据说计算速度很快
+class Squareplus(nn.Module):
+    def __init__(self, b=0.2):
+        super(Squareplus, self).__init__()
+        self.b = b
+
+    def forward(self, x):
+        x = 0.5 * (x + torch.sqrt(x+self.b))
+        return x
+
+
+
 
 #SwiGLU激活函数,引入了门控机制
 #过于复杂,暂时不加入
 
 
 
+class ACT(nn.Module):
+    def __init__(self,act,) -> None:
+        super(ACT,self,).__init__()
+        if act == 'relu':
+            self.act = nn.relu()
+        if act == 'leakRelu':
+            self.act = nn.LeakyReLU(0.01)
+        if act == 'swish':
+            self.act = Swish()
+        if act == 'Mish':
+            self.act = Mish()
+        if act == 'Gelu':
+            self.act = F.gelu()
+        if act == 'Tanh':
+            self.act = F.tanh()
+        if act == 'softplus':
+            self.act = nn.Softplus()
+        if act == 'squareplus':
+            self.act = Squareplus()
+        #如果有其他的,就在这里添加
+    
+    def forward(self,x):
+        return self.act(x)
+        
+        
+        
+        
+        
