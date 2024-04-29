@@ -54,7 +54,11 @@ class Swish(nn.Module):
     def forward(self,x):
         return x * torch.sigmoid(self.beta*x)
 
-if __name__ == 'main':
+#使用示例
+if __name__ == '__main__':
     a = torch.zeros((16,8,48,48))
+    b = torch.zeros((16,8,9,48,48))
     clayer2d = CAlayer2D(8,4)
-    CAlayer2D(a)
+    clayer3d = CAlayer3D(8,4)
+    clayer2d(a)
+    clayer3d(b)
