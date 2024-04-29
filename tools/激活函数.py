@@ -24,7 +24,6 @@ class Mish(nn.Module):
         return x*(torch.tanh(F.softplus(x)))
 
 
-
 #softplus的平替版,据说计算速度很快
 class Squareplus(nn.Module):
     def __init__(self, b=0.2):
@@ -36,11 +35,8 @@ class Squareplus(nn.Module):
         return x
 
 
-
-
 #SwiGLU激活函数,引入了门控机制
 #过于复杂,暂时不加入
-
 
 
 class ACT(nn.Module):
@@ -52,11 +48,11 @@ class ACT(nn.Module):
             self.act = nn.LeakyReLU(0.01)
         if act == 'swish':
             self.act = Swish()
-        if act == 'Mish':
+        if act == 'mish':
             self.act = Mish()
-        if act == 'Gelu':
+        if act == 'gelu':
             self.act = F.gelu()
-        if act == 'Tanh':
+        if act == 'tanh':
             self.act = F.tanh()
         if act == 'softplus':
             self.act = nn.Softplus()
@@ -65,6 +61,7 @@ class ACT(nn.Module):
         #如果有其他的,就在这里添加
     
     def forward(self,x):
+        self.act = self.act.to(x.device)
         return self.act(x)
         
         
